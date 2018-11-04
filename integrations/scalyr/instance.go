@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/convertkit/stories/stories"
 	"github.com/google/uuid"
-	"github.com/pothibo/stories/stories"
 	"log"
 	"net/http"
 	"os"
@@ -34,7 +34,7 @@ func (i *Instance) Configure() error {
 
 	i.SessionInfo = make(map[string]string)
 	i.SessionInfo["logfile"] = "stories"
-	i.SessionInfo["serverHost"] = "test"
+	i.SessionInfo["serverHost"] = "production"
 
 	i.Url = "https://www.scalyr.com/addEvents"
 

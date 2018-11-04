@@ -1,11 +1,14 @@
 package scalyr
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
 
 func TestConfigureInstanceGenerateASessionUUID(t *testing.T) {
+	os.Setenv("SCALYR_WRITE_TOKEN", "test")
+
 	instance := &Instance{}
 	err := instance.Configure()
 

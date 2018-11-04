@@ -59,11 +59,11 @@ func (q *Queue) Collect() []*Story {
 	return stories
 }
 
-func (q *Queue) Size() int {
+func (q *Queue) Capacity() int {
 	return cap(q.channel)
 }
 
-func (q *Queue) InQueue() int {
+func (q *Queue) Size() int {
 	return len(q.channel)
 }
 
@@ -72,7 +72,7 @@ func (q *Queue) IsEmpty() bool {
 }
 
 func (q *Queue) IsFull() bool {
-	return q.InQueue() == q.Size()
+	return q.Size() >= q.Capacity()
 }
 
 func read(c net.Conn) ([]byte, int, error) {
