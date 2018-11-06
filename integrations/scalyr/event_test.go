@@ -1,7 +1,6 @@
 package scalyr
 
 import (
-	"bytes"
 	"encoding/json"
 	"github.com/convertkit/stories/stories"
 	"testing"
@@ -54,7 +53,7 @@ func TestTimestampInJSON(t *testing.T) {
 	story := story(t)
 	payload := payloadForEventTest(story, t)
 
-	if bytes.Compare([]byte(payload["ts"].(string)), []byte("1541354132811")) != 0 {
+	if payload["ts"] != string("1541354132811") {
 		t.Fail()
 	}
 }
@@ -74,7 +73,7 @@ func TestMessageInAttributesJSON(t *testing.T) {
 
 	attributes := payload["attrs"].(map[string]interface{})
 
-	if bytes.Compare([]byte(attributes["message"].(string)), []byte("Hello world!")) != 0 {
+	if attributes["message"] != string("Hello world!") {
 		t.Fail()
 	}
 }
