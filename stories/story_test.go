@@ -5,6 +5,23 @@ import (
 	"testing"
 )
 
+func storyJSON() []byte {
+  return []byte(`{
+    "severity": 4,
+    "data": {
+      "foo": {
+        "bar": "Something",
+        "ints": 1234,
+        "array": ["1234", 9832],
+        "yolo": true
+      },
+      "object_id": 1234,
+      "boolean": true,
+      "some": "value"
+    }
+  }`)
+}
+
 func TestNewStoryWithInvalidJSON(t *testing.T) {
 	story, err := NewStory([]byte("Invalid JSON"))
 
@@ -18,7 +35,7 @@ func TestNewStoryWithInvalidJSON(t *testing.T) {
 }
 
 func TestNewStoryWithValidJSON(t *testing.T) {
-	story, err := NewStory([]byte("{\"foo\": \"bar\"}"))
+	story, err := NewStory([]byte(`{"foo": "bar"}`))
 
 	if story == nil {
 		t.Error(err)
@@ -79,6 +96,30 @@ func TestNewStoryDataIsNeverNil(t *testing.T) {
 	}
 
 	if story.Data == nil {
+		t.Fail()
+	}
+}
+
+func TestNewStoryWithCompleteData(t *testing.T) {
+	event, err := NewStory(storyJSON())
+
+	json, err := json.Marshal(event)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	story, err := NewStory(json)
+
+	if err != nil {
+		t.Fail()
+	}
+
+	if story.Severity != 4 {
+		t.Fail()
+	}
+
+	if story.Data["foo"] == nil {
 		t.Fail()
 	}
 }
