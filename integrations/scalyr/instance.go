@@ -34,7 +34,7 @@ func (i *Instance) Configure() error {
 
 	i.SessionInfo = make(map[string]string)
 	i.SessionInfo["logfile"] = "stories"
-	i.SessionInfo["serverHost"] = "production"
+	i.SessionInfo["serverHost"] = os.Getenv("RACK_ENV")
 
 	i.Url = "https://www.scalyr.com/addEvents"
 
