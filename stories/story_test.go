@@ -6,7 +6,7 @@ import (
 )
 
 func storyJSON() []byte {
-  return []byte(`{
+	return []byte(`{
     "severity": 4,
     "data": {
       "foo": {

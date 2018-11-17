@@ -2,6 +2,7 @@ package stories
 
 import (
 	"encoding/json"
+	"log"
 )
 
 type Story struct {
@@ -16,6 +17,8 @@ func NewStory(bytes []byte) (*Story, error) {
 	err := json.Unmarshal(bytes, &story)
 
 	if err != nil {
+		log.Print("Error Creating a Story: ", err)
+		log.Print("Payload content: ", string(bytes))
 		return nil, err
 	}
 
