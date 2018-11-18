@@ -11,21 +11,21 @@ type Story struct {
 	Data      map[string]json.RawMessage
 }
 
-func NewStory(bytes []byte) (*Story, error) {
-	var story Story
-	err := json.Unmarshal(bytes, &story)
+func (s *Story) UnmarshalJSON(bytes []byte) error {
+	type alias Story
+	err := json.Unmarshal(bytes, (*alias)(s))
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if story.Data == nil {
-		story.Data = make(map[string]json.RawMessage)
+	if s.Data == nil {
+		s.Data = make(map[string]json.RawMessage)
 	}
 
-	if story.Severity == 0 {
-		story.Severity = 3
+	if s.Severity == 0 {
+		s.Severity = 3
 	}
 
-	return &story, nil
+	return nil
 }

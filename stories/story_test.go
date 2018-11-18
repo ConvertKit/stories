@@ -6,7 +6,7 @@ import (
 )
 
 func storyJSON() []byte {
-  return []byte(`{
+	return []byte(`{
     "severity": 4,
     "data": {
       "foo": {
@@ -22,8 +22,9 @@ func storyJSON() []byte {
   }`)
 }
 
-func TestNewStoryWithInvalidJSON(t *testing.T) {
-	story, err := NewStory([]byte("Invalid JSON"))
+func TestUnmarshalWithInvalidJSON(t *testing.T) {
+	var story *Story
+	err := json.Unmarshal([]byte("Invalid "), &story)
 
 	if story != nil {
 		t.Fail()
@@ -34,8 +35,9 @@ func TestNewStoryWithInvalidJSON(t *testing.T) {
 	}
 }
 
-func TestNewStoryWithValidJSON(t *testing.T) {
-	story, err := NewStory([]byte(`{"foo": "bar"}`))
+func TestUnmarshalWithValidJSON(t *testing.T) {
+	var story *Story
+	err := json.Unmarshal([]byte(`{"foo": "bar"}`), &story)
 
 	if story == nil {
 		t.Error(err)
@@ -46,8 +48,9 @@ func TestNewStoryWithValidJSON(t *testing.T) {
 	}
 }
 
-func TestNewStoryHasDefaultSeverity(t *testing.T) {
-	story, err := NewStory([]byte("{\"foo\": \"bar\"}"))
+func TestUnmarshalHasDefaultSeverity(t *testing.T) {
+	var story *Story
+	err := json.Unmarshal([]byte("{\"foo\": \"bar\"}"), &story)
 
 	if err != nil {
 		t.Fail()
@@ -58,18 +61,19 @@ func TestNewStoryHasDefaultSeverity(t *testing.T) {
 	}
 }
 
-func TestNewStorySetsSeverityIfExists(t *testing.T) {
+func TestUnmarshalSetsSeverityIfExists(t *testing.T) {
+	var story *Story
 	sev := 4
 	data := make(map[string]interface{})
 	data["severity"] = sev
 
-	json, err := json.Marshal(data)
+	payload, err := json.Marshal(data)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	story, err := NewStory(json)
+	err = json.Unmarshal(payload, &story)
 
 	if err != nil {
 		t.Fail()
@@ -80,16 +84,17 @@ func TestNewStorySetsSeverityIfExists(t *testing.T) {
 	}
 }
 
-func TestNewStoryDataIsNeverNil(t *testing.T) {
+func TestUnmarshalDataIsNeverNil(t *testing.T) {
+	var story *Story
 	data := make(map[string]interface{})
 
-	json, err := json.Marshal(data)
+	payload, err := json.Marshal(data)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	story, err := NewStory(json)
+	err = json.Unmarshal(payload, &story)
 
 	if err != nil {
 		t.Fail()
@@ -100,16 +105,18 @@ func TestNewStoryDataIsNeverNil(t *testing.T) {
 	}
 }
 
-func TestNewStoryWithCompleteData(t *testing.T) {
-	event, err := NewStory(storyJSON())
+func TestUnmarshalWithCompleteData(t *testing.T) {
+	var event *Story
+	err := json.Unmarshal(storyJSON(), &event)
 
-	json, err := json.Marshal(event)
+	payload, err := json.Marshal(event)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	story, err := NewStory(json)
+	var story *Story
+	err = json.Unmarshal(payload, &story)
 
 	if err != nil {
 		t.Fail()
