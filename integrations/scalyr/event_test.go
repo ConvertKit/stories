@@ -7,7 +7,8 @@ import (
 )
 
 func story(t *testing.T) *stories.Story {
-	story, err := stories.NewStory([]byte(`{
+	var story *stories.Story
+	err := json.Unmarshal([]byte(`{
     "severity": 4,
     "timestamp": "1541354132811",
     "message": "Hello world!",
@@ -20,7 +21,7 @@ func story(t *testing.T) *stories.Story {
       "boolean": true,
       "content": "Stuff"
     }
-  }`))
+  }`), &story)
 
 	if err != nil {
 		t.Fail()

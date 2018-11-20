@@ -22,7 +22,8 @@ func instanceForInstanceTest(t *testing.T) *Instance {
 }
 
 func payloadForInstanceTest(t *testing.T) *Payload {
-	story, err := stories.NewStory([]byte(`{
+	var story *stories.Story
+	err := json.Unmarshal([]byte(`{
     "severity": 4,
     "timestamp": "1541354132811",
     "message": "Hello world!",
@@ -35,7 +36,7 @@ func payloadForInstanceTest(t *testing.T) *Payload {
       "boolean": true,
       "content": "Stuff"
     }
-  }`))
+  }`), &story)
 
 	if err != nil {
 		t.Fail()

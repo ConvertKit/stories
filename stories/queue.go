@@ -1,6 +1,7 @@
 package stories
 
 import (
+	"encoding/json"
 	"log"
 	"net"
 )
@@ -24,14 +25,10 @@ func NewQueueOfSize(size int) *Queue {
 
 func (q *Queue) Add(c net.Conn) error {
 	defer c.Close()
+	var story *Story
 
-	buf, nr, err := read(c)
-
-	if err != nil {
-		return err
-	}
-
-	story, err := NewStory(buf[:nr])
+	decoder := json.NewDecoder(c)
+	err := decoder.Decode(&story)
 
 	if err != nil {
 		return err
@@ -73,11 +70,4 @@ func (q *Queue) IsEmpty() bool {
 
 func (q *Queue) IsFull() bool {
 	return q.Size() >= q.Capacity()
-}
-
-func read(c net.Conn) ([]byte, int, error) {
-	buf := make([]byte, 2048)
-	nr, err := c.Read(buf)
-
-	return buf, nr, err
 }
