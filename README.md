@@ -24,6 +24,13 @@ _default: /tmp/stories.sock_
 
 The path where the unix socket will be created. This is used by libraries to send over events.
 
+
+*`--debug=boolean`*
+
+_default: false_
+
+If you want to see debug logs, you need to set this to `true`. This should not be switched on in production.
+
 #### Batching against an interval
 
 The way the agent works is that there is a runloop set to the `interval` set at runtime that will send in batch any stories that were collected during the interval.

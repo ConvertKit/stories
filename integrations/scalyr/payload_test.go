@@ -9,9 +9,10 @@ import (
 
 func instanceForInstanceTest(t *testing.T) *Instance {
 	os.Setenv("SCALYR_WRITE_TOKEN", "test")
+	debug := false
 
 	instance := &Instance{}
-	err := instance.Configure()
+	err := instance.Configure(&debug)
 
 	if err != nil {
 		t.Error(err)

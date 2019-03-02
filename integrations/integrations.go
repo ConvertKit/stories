@@ -9,14 +9,14 @@ import (
 
 type Integration interface {
 	Send([]*stories.Story) (*http.Response, error)
-	Configure() error
+	Configure(*bool) error
 }
 
-func Use(name string) (Integration, error) {
+func Use(name string, debug *bool) (Integration, error) {
 	switch name {
 	case "scalyr":
 		instance := &scalyr.Instance{}
-		err := instance.Configure()
+		err := instance.Configure(debug)
 		return instance, err
 	default:
 		return nil, errors.New("Invalid integration")
