@@ -19,13 +19,15 @@ type Instance struct {
 	Secret      string
 
 	configured bool
+	debug      bool
 }
 
-func (i *Instance) Configure() error {
+func (i *Instance) Configure(debug *bool) error {
 	if i.configured == true {
 		return errors.New("Instance already configured")
 	}
 
+	i.debug = *debug
 	i.Secret = os.Getenv("SCALYR_WRITE_TOKEN")
 
 	if len(i.Secret) == 0 {
@@ -47,8 +49,6 @@ func (i *Instance) Configure() error {
 }
 
 func (i *Instance) Send(stories []*stories.Story) (*http.Response, error) {
-	log.Printf("Sending %d stories.", len(stories))
-
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
@@ -57,7 +57,10 @@ func (i *Instance) Send(stories []*stories.Story) (*http.Response, error) {
 
 	data, err := json.Marshal(payload)
 
-	log.Print(string(data))
+	if i.debug == true {
+		log.Printf("Sending %d stories.", len(stories))
+		log.Print(string(data))
+	}
 
 	if err != nil {
 		log.Print("Error creating a payload to send ", err)

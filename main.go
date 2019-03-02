@@ -19,11 +19,12 @@ func main() {
 	seconds := flag.Int("interval", 1, "seconds before sending stories")
 	integrationName := flag.String("integration", "scalyr", "integration to use with StoryTeller")
 	socketPath := flag.String("socket", "/tmp/stories.sock", "path of the socket created by this agent")
+	debug := flag.Bool("debug", false, "show debug logs")
 
 	flag.Parse()
 
 	queue = stories.NewQueueOfSize(*bufferSize)
-	integration, err := integrations.Use(*integrationName)
+	integration, err := integrations.Use(*integrationName, debug)
 
 	if err != nil {
 		log.Fatal("Couldn't configure integration: ", err)
